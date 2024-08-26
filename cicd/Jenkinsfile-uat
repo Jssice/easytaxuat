@@ -30,22 +30,6 @@ pipeline {
                 }
             }
         }
-                
-        stage('Install Dependencies') {
-            steps {
-                dir('easy-tax') {
-                    sh 'npm install'
-                }
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                dir('easy-tax') {
-                    sh 'npm install'
-                }
-            }
-        }
 
         stage('Start Development Server') {
             steps {
