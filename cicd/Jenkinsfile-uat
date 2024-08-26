@@ -25,9 +25,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                dir('easy-tax') {
-                    sh 'npm install'
-                }
+                sh 'npm install'
             }
         }
 
@@ -67,6 +65,9 @@ pipeline {
         }
         failure {
             echo 'Deployment failed.'
+        }
+        always {
+            cleanWs()
         }
     }
 }
