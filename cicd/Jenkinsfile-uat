@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git url: 'https://github.com/benli-bl17/easy-tax.git', branch: 'main'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Start Development Server') {
+            steps {
+                sh 'npm run dev &'
+                sleep time: 30, unit: 'SECONDS' // 等待服务器启动
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh 'npm test'
+            }
+        }
+        
+        stage('Stop Server') {
+            steps {
+                sh 'pkill -f "next dev"'
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+
+        success {
+            mail to: 'your-email@example.com',
+                 subject: "Jenkins Build ${env.BUILD_NUMBER} - Success",
+                 body: "Build ${env.BUILD_NUMBER} was successful.\n\nCheck the console output for more details."
+        }
+
+        failure {
+            mail to: 'your-email@example.com',
+                 subject: "Jenkins Build ${env.BUILD_NUMBER} - Failed",
+                 body: "Build ${env.BUILD_NUMBER} failed.\n\nCheck the console output for more details."
+        }
+    }
+}
