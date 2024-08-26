@@ -11,6 +11,7 @@ pipeline {
             steps {
                 script {
                     sh 'pwd'  // 对于 Linux/MacOS
+                    sh 'ls -la'
                 }
             }
         }
