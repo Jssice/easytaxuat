@@ -10,7 +10,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                dir('easy-tax') {
+                dir('easytax') {
                     sh 'npm install'
                 }
             }
