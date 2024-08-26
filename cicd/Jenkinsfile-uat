@@ -7,7 +7,13 @@ pipeline {
                 git url: 'https://github.com/benli-bl17/easy-tax.git', branch: 'main'
             }
         }
-
+        stage('Print Current Directory') {
+            steps {
+                script {
+                    sh 'pwd'  // 对于 Linux/MacOS
+                }
+            }
+        }
         stage('Install Dependencies') {
             steps {
                 dir('easytax') {
@@ -20,6 +26,17 @@ pipeline {
             steps {
                 sh 'npm run dev &'
                 sleep time: 30, unit: 'SECONDS' // 等待服务器启动
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                script {
+                    // Add your deployment steps here
+                    // For example, you might copy files to a server, or use a deployment tool
+                    sh 'echo Deploying to UAT environment...'
+                    // Example: sh 'scp -r * user@uat-server:/path/to/deploy'
+                }
             }
         }
 
