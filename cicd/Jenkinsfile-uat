@@ -25,7 +25,9 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                dir('easy-tax') {
+                    sh 'npm install'
+                }
             }
         }
 
