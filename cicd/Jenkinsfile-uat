@@ -15,60 +15,50 @@ pipeline {
                 }
             }
         }
-        // stage('Install Dependencies') {
-        //     steps {
-        //         dir('easy-tax') {
-        //             sh 'npm install'
-        //         }
-        //     }
-        // }
+        stage('Install Dependencies') {
+            steps {
+                dir('easy-tax') {
+                    sh 'npm install'
+                }
+            }
+        }
 
-        // stage('Start Development Server') {
-        //     steps {
-        //         sh 'npm run dev &'
-        //         sleep time: 30, unit: 'SECONDS' // 等待服务器启动
-        //     }
-        // }
+        stage('Start Development Server') {
+            steps {
+                sh 'npm run dev &'
+                sleep time: 30, unit: 'SECONDS' // 等待服务器启动
+            }
+        }
         
-        // stage('Deploy') {
-        //     steps {
-        //         script {
-        //             // Add your deployment steps here
-        //             // For example, you might copy files to a server, or use a deployment tool
-        //             sh 'echo Deploying to UAT environment...'
-        //             // Example: sh 'scp -r * user@uat-server:/path/to/deploy'
-        //         }
-        //     }
-        // }
+        stage('Deploy') {
+            steps {
+                script {
+                    // Add your deployment steps here
+                    // For example, you might copy files to a server, or use a deployment tool
+                    sh 'echo Deploying to UAT environment...'
+                    // Example: sh 'scp -r * user@uat-server:/path/to/deploy'
+                }
+            }
+        }
 
-        // stage('Run Tests') {
-        //     steps {
-        //         sh 'npm test'
-        //     }
-        // }
+        stage('Run Tests') {
+            steps {
+                sh 'npm test'
+            }
+        }
         
-        // stage('Stop Server') {
-        //     steps {
-        //         sh 'pkill -f "next dev"'
-        //     }
-        // }
+        stage('Stop Server') {
+            steps {
+                sh 'pkill -f "next dev"'
+            }
+        }
     }
-
     post {
-        always {
-            cleanWs()
-        }
-
         success {
-            mail to: 'your-email@example.com',
-                 subject: "Jenkins Build ${env.BUILD_NUMBER} - Success",
-                 body: "Build ${env.BUILD_NUMBER} was successful.\n\nCheck the console output for more details."
+            echo 'Deployment completed successfully.'
         }
-
         failure {
-            mail to: 'your-email@example.com',
-                 subject: "Jenkins Build ${env.BUILD_NUMBER} - Failed",
-                 body: "Build ${env.BUILD_NUMBER} failed.\n\nCheck the console output for more details."
+            echo 'Deployment failed.'
         }
     }
 }
