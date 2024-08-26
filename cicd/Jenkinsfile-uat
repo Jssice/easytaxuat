@@ -16,14 +16,21 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Check npm Version') {
             steps {
-                dir('easy-tax') {
-                    sh 'pwd' 
-                }
+                // Print npm version
+                sh 'npm --version'
             }
         }
 
+        // stage('Install Dependencies') {
+        //     steps {
+        //         dir('easy-tax') {
+        //             sh 'npm install'
+        //         }
+        //     }
+        // }
+                
         // stage('Install Dependencies') {
         //     steps {
         //         dir('easy-tax') {
