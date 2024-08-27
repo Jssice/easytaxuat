@@ -25,6 +25,25 @@ pipeline {
         //     }
         // }
 
+        stage('Check Node Version') {
+            steps {
+                script {
+                    sh '''
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+                    node -v  # Check the current Node.js version
+                    npm -v   # Check the npm version
+                    '''
+                }
+            }
+        }
+        
+        stage('Check npm Version0') {
+            steps {
+                // Print npm version
+                sh 'npm --version'
+            }
+        }
 
         stage('Check Git Path') {
             steps {
