@@ -120,10 +120,13 @@ pipeline {
         //     }
         // }
 
-        stage('Check npm Version') {
+        stage('Check node n npm Version') {
             steps {
-                // Print npm version
+                // Print version
+                sh 'nvm list'
                 sh 'npm --version'
+                sh 'node --version'
+
             }
         }
 
