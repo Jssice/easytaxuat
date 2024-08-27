@@ -2,6 +2,17 @@ pipeline {
     agent any
 
     stages {
+        stage('Check Git Path') {
+            steps {
+                script {
+                    // 显示 Git 的安装路径
+                    sh 'which git'
+                    
+                    // 显示 Git 版本
+                    sh 'git --version'
+                }
+            }
+        }
         stage('Checkout Code') {
             steps {
                 git url: 'https://github.com/benli-bl17/easy-tax.git', branch: 'main'
@@ -40,44 +51,44 @@ pipeline {
             }
         }
         
-        stage('Install Dependencies') {
-            steps {
-                dir('easy-tax') {
-                    // sh 'yarn install' 
-                    sh 'npm install'
-                }
-            }
-        }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         dir('easy-tax') {
+        //             // sh 'yarn install' 
+        //             sh 'npm install'
+        //         }
+        //     }
+        // }
 
-        stage('Start Development Server') {
-            steps {
-                sh 'npm run dev &'
-                sleep time: 30, unit: 'SECONDS' // 等待服务器启动
-            }
-        }
+        // stage('Start Development Server') {
+        //     steps {
+        //         sh 'npm run dev &'
+        //         sleep time: 30, unit: 'SECONDS' // 等待服务器启动
+        //     }
+        // }
         
-        stage('Deploy') {
-            steps {
-                script {
-                    // Add your deployment steps here
-                    // For example, you might copy files to a server, or use a deployment tool
-                    sh 'echo Deploying to UAT environment...'
-                    // Example: sh 'scp -r * user@uat-server:/path/to/deploy'
-                }
-            }
-        }
+        // stage('Deploy') {
+        //     steps {
+        //         script {
+        //             // Add your deployment steps here
+        //             // For example, you might copy files to a server, or use a deployment tool
+        //             sh 'echo Deploying to UAT environment...'
+        //             // Example: sh 'scp -r * user@uat-server:/path/to/deploy'
+        //         }
+        //     }
+        // }
 
-        stage('Run Tests') {
-            steps {
-                sh 'npm test'
-            }
-        }
+        // stage('Run Tests') {
+        //     steps {
+        //         sh 'npm test'
+        //     }
+        // }
         
-        stage('Stop Server') {
-            steps {
-                sh 'pkill -f "next dev"'
-            }
-        }
+        // stage('Stop Server') {
+        //     steps {
+        //         sh 'pkill -f "next dev"'
+        //     }
+        // }
     }
 
     post {
