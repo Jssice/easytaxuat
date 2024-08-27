@@ -38,29 +38,29 @@ pipeline {
             }
         }
         
-        stage('Checkout Code') {
-            steps {
-                git url: 'https://github.com/benli-bl17/easy-tax.git', branch: 'main'
-            }
-        }
+        // stage('Checkout Code') {
+        //     steps {
+        //         git url: 'https://github.com/benli-bl17/easy-tax.git', branch: 'main'
+        //     }
+        // }
 
-        stage('Print Workspace Directory') {
-            steps {
-                dir('easy-tax') {
-                    sh 'pwd'  // 对于 Linux/MacOS
-                    sh 'ls -la'
-                }
-            }
-        }
+        // stage('Print Workspace Directory') {
+        //     steps {
+        //         dir('easy-tax') {
+        //             sh 'pwd'  // 对于 Linux/MacOS
+        //             sh 'ls -la'
+        //         }
+        //     }
+        // }
 
-        stage('Print Current Directory') {
-            steps {
-                script {
-                    sh 'pwd'  // 对于 Linux/MacOS
-                    sh 'ls -la'
-                }
-            }
-        }
+        // stage('Print Current Directory') {
+        //     steps {
+        //         script {
+        //             sh 'pwd'  // 对于 Linux/MacOS
+        //             sh 'ls -la'
+        //         }
+        //     }
+        // }
 
 
         // stage('Check Git Version') {
