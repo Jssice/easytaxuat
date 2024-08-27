@@ -43,7 +43,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('easy-tax') {
-                    sh 'npm install'
+                    sh 'yarn install' 
+                    //'npm install'
                 }
             }
         }
