@@ -43,8 +43,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('easy-tax') {
-                    sh 'yarn install' 
-                    //'npm install'
+                    // sh 'yarn install' 
+                    sh 'npm install'
                 }
             }
         }
@@ -79,6 +79,7 @@ pipeline {
             }
         }
     }
+
     post {
         success {
             echo 'Deployment completed successfully.'
