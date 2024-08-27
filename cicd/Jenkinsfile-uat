@@ -14,7 +14,7 @@ pipeline {
         //     }
         // }
 
-        stage('Print Current Directory') {
+        stage('Print Current Directory0') {
             steps {
                 script {
                     sh 'pwd'  // 对于 Linux/MacOS
@@ -23,7 +23,7 @@ pipeline {
             }
         }
 
-        stage('Print Workspace Directory') {
+        stage('Print Workspace Directory0') {
             steps {
                 dir('easy-tax') {
                     sh 'pwd'  // 对于 Linux/MacOS
