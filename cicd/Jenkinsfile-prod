@@ -1,56 +1,85 @@
 pipeline {
     agent any
 
+    environment {
+        NODE_VERSION = '18'
+    }
+
     stages {
+        stage('Check Node Version') {
+            steps {
+                script {
+                    sh '''
+                        export NVM_DIR="$HOME/.nvm"
+                        if [ -s "$NVM_DIR/nvm.sh" ]; then
+                                . "$NVM_DIR/nvm.sh"
+                        else
+                            echo "nvm is not installed. Installing nvm..."
+                            #curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+                            # Source nvm script after installation
+                            #. "$NVM_DIR/nvm.sh"
+                        fi
+                        
+                        node -v  # Check the current Node.js version
+                        npm -v   # Check the npm version
+
+                        nvm install ${NODE_VERSION}
+                        nvm use ${NODE_VERSION}
+                    '''
+                }
+            }
+        }
+        
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/benli-bl17/easy-tax.git', branch: 'main'
+                git url: 'https://github.com/Jssice/easy-tax.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
                 dir('easy-tax') {
+                    // sh 'yarn install' 
                     sh 'npm install'
                 }
             }
         }
 
-        stage('Start Development Server') {
+        stage('Prod Build') {
             steps {
-                sh 'npm run dev &'
-                sleep time: 30, unit: 'SECONDS' // 等待服务器启动
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh 'npm test'
+                sh 'npm run build &'
+                sleep time: 30, unit: 'SECONDS' 
             }
         }
         
-        stage('Stop Server') {
+        stage('Start Development Server') {
             steps {
-                sh 'pkill -f "next dev"'
+                sh 'npm start' // 等待服务器启动
             }
         }
+
+        // stage('Run Tests') {
+        //     steps {
+        //         sh 'npm test'
+        //     }
+        // }
+        
+        // stage('Stop Server') {
+        //     steps {
+        //         sh 'pkill -f "next dev"'
+        //     }
+        // }
     }
 
     post {
-        always {
-            cleanWs()
-        }
-
         success {
-            mail to: 'your-email@example.com',
-                 subject: "Jenkins Build ${env.BUILD_NUMBER} - Success",
-                 body: "Build ${env.BUILD_NUMBER} was successful.\n\nCheck the console output for more details."
+            echo 'Deployment completed successfully.'
         }
-
         failure {
-            mail to: 'your-email@example.com',
-                 subject: "Jenkins Build ${env.BUILD_NUMBER} - Failed",
-                 body: "Build ${env.BUILD_NUMBER} failed.\n\nCheck the console output for more details."
+            echo 'Deployment failed.'
         }
+        // always {
+        //     cleanWs()
+        // }
     }
 }
