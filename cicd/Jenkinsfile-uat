@@ -23,14 +23,14 @@ pipeline {
             }
         }
 
-        stage('Print Workspace Directory0') {
-            steps {
-                dir('easy-tax') {
-                    sh 'pwd'  // 对于 Linux/MacOS
-                    sh 'ls -la'
-                }
-            }
-        }
+        // stage('Print Workspace Directory0') {
+        //     steps {
+        //         dir('easy-tax') {
+        //             sh 'pwd'  // 对于 Linux/MacOS
+        //             sh 'ls -la'
+        //         }
+        //     }
+        // }
         
         stage('Clean Workspace') {
             steps {
@@ -38,18 +38,9 @@ pipeline {
             }
         }
         
-        // stage('Checkout Code') {
-        //     steps {
-        //         git url: 'https://github.com/benli-bl17/easy-tax.git', branch: 'main'
-        //     }
-        // }
-
-        stage('Print Current Directory') {
+        stage('Checkout Code') {
             steps {
-                script {
-                    sh 'pwd'  // 对于 Linux/MacOS
-                    sh 'ls -la'
-                }
+                git url: 'https://github.com/benli-bl17/easy-tax.git', branch: 'main'
             }
         }
 
@@ -61,6 +52,16 @@ pipeline {
                 }
             }
         }
+
+        stage('Print Current Directory') {
+            steps {
+                script {
+                    sh 'pwd'  // 对于 Linux/MacOS
+                    sh 'ls -la'
+                }
+            }
+        }
+
 
         // stage('Check Git Version') {
         //     steps {
