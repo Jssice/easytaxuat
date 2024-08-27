@@ -2,26 +2,50 @@ pipeline {
     agent any
 
     stages {
-        // stage('Check Git Path') {
+        // stage("build") {
+        //     // when {
+        //     //     expression {
+        //     //         BRANCH_NAME == 'dev' && CODE_CHANGE == true
+        //     //     }
+        //     // }
+            
         //     steps {
-        //         script {
-        //             // 显示 Git 的安装路径
-        //             sh 'which git'
-                    
-        //             // 显示 Git 版本
-        //             sh 'git --version'
-        //         }
+        //         echo 'building the app ...'
         //     }
         // }
 
-        stage('Print Current Directory0') {
+        // stage("test") {
+        //     when {
+        //         expression {
+        //             BRANCH_NAME == 'dev'
+        //         }
+        //     }
+        //     steps {
+        //         echo 'testing the app ...'
+        //     }
+        // }
+
+
+        stage('Check Git Path') {
             steps {
                 script {
-                    sh 'pwd'  // 对于 Linux/MacOS
-                    sh 'ls -la'
+                    // 显示 Git 的安装路径
+                    sh 'which git'
+                    
+                    // 显示 Git 版本
+                    sh 'git --version'
                 }
             }
         }
+
+        // stage('Print Current Directory0') {
+        //     steps {
+        //         script {
+        //             sh 'pwd'  // 对于 Linux/MacOS
+        //             sh 'ls -la'
+        //         }
+        //     }
+        // }
 
         // stage('Print Workspace Directory0') {
         //     steps {
@@ -32,17 +56,17 @@ pipeline {
         //     }
         // }
         
-        stage('Clean Workspace') {
-            steps {
-                deleteDir() // Deletes the workspace contents
-            }
-        }
-        
-        // stage('Checkout Code') {
+        // stage('Clean Workspace') {
         //     steps {
-        //         git url: 'https://github.com/benli-bl17/easy-tax.git', branch: 'main'
+        //         deleteDir() // Deletes the workspace contents
         //     }
         // }
+        
+        stage('Checkout Code') {
+            steps {
+                git url: 'https://github.com/Jssice/easy-tax.git'
+            }
+        }
 
         // stage('Print Workspace Directory') {
         //     steps {
@@ -72,45 +96,45 @@ pipeline {
         //     }
         // }
 
-        // stage('Check npm Version') {
-        //     steps {
-        //         // Print npm version
-        //         sh 'npm --version'
-        //     }
-        // }
-        
-        // stage('Install Dependencies') {
-        //     steps {
-        //         dir('easy-tax') {
-        //             // sh 'yarn install' 
-        //             sh 'npm install'
-        //         }
-        //     }
-        // }
+        stage('Check npm Version') {
+            steps {
+                // Print npm version
+                sh 'npm --version'
+            }
+        }
 
-        // stage('Start Development Server') {
-        //     steps {
-        //         sh 'npm run dev &'
-        //         sleep time: 30, unit: 'SECONDS' // 等待服务器启动
-        //     }
-        // }
-        
-        // stage('Deploy') {
-        //     steps {
-        //         script {
-        //             // Add your deployment steps here
-        //             // For example, you might copy files to a server, or use a deployment tool
-        //             sh 'echo Deploying to UAT environment...'
-        //             // Example: sh 'scp -r * user@uat-server:/path/to/deploy'
-        //         }
-        //     }
-        // }
+        stage('Install Dependencies') {
+            steps {
+                dir('easy-tax') {
+                    // sh 'yarn install' 
+                    sh 'npm install'
+                }
+            }
+        }
 
-        // stage('Run Tests') {
-        //     steps {
-        //         sh 'npm test'
-        //     }
-        // }
+        stage('Start Development Server') {
+            steps {
+                sh 'npm run dev &'
+                sleep time: 30, unit: 'SECONDS' // 等待服务器启动
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                script {
+                    // Add your deployment steps here
+                    // For example, you might copy files to a server, or use a deployment tool
+                    sh 'echo Deploying to UAT environment...'
+                    // Example: sh 'scp -r * user@uat-server:/path/to/deploy'
+                }
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh 'npm test'
+            }
+        }
         
         // stage('Stop Server') {
         //     steps {
@@ -126,8 +150,8 @@ pipeline {
         failure {
             echo 'Deployment failed.'
         }
-        always {
-            cleanWs()
-        }
+        // always {
+        //     cleanWs()
+        // }
     }
 }
