@@ -39,7 +39,7 @@ pipeline {
                         node -v  # Check the current Node.js version
                         npm -v   # Check the npm version
 
-                        # nvm use 18
+                        nvm use 18
                     '''
                 }
             }
