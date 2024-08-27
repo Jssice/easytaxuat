@@ -29,16 +29,16 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    export NVM_DIR="$HOME/.nvm"
-                    if [ -s "$NVM_DIR/nvm.sh" ]; then
-                            . "$NVM_DIR/nvm.sh"
-                    else
-                        echo "nvm is not installed. Installing nvm..."
+                        export NVM_DIR="$HOME/.nvm"
+                        if [ -s "$NVM_DIR/nvm.sh" ]; then
+                                . "$NVM_DIR/nvm.sh"
+                        else
+                            echo "nvm is not installed. Installing nvm..."
 
-                    node -v  # Check the current Node.js version
-                    npm -v   # Check the npm version
+                        node -v  # Check the current Node.js version
+                        npm -v   # Check the npm version
 
-                    # nvm use 18
+                        # nvm use 18
                     '''
                 }
             }
