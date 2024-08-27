@@ -2,22 +2,30 @@ pipeline {
     agent any
 
     stages {
-        stage('Check Git Path') {
-            steps {
-                script {
-                    // 显示 Git 的安装路径
-                    sh 'which git'
+        // stage('Check Git Path') {
+        //     steps {
+        //         script {
+        //             // 显示 Git 的安装路径
+        //             sh 'which git'
                     
-                    // 显示 Git 版本
-                    sh 'git --version'
-                }
+        //             // 显示 Git 版本
+        //             sh 'git --version'
+        //         }
+        //     }
+        // }
+
+        stage('Clean Workspace') {
+            steps {
+                deleteDir() // Deletes the workspace contents
             }
         }
+        
         stage('Checkout Code') {
             steps {
                 git url: 'https://github.com/benli-bl17/easy-tax.git', branch: 'main'
             }
         }
+
         stage('Print Current Directory') {
             steps {
                 script {
@@ -27,29 +35,30 @@ pipeline {
             }
         }
 
-        stage('List Workspace') {
+        stage('Print Workspace Directory') {
             steps {
                 dir('easy-tax') {
+                    sh 'pwd'  // 对于 Linux/MacOS
                     sh 'ls -la'
                 }
             }
         }
 
-        stage('Check Git Version') {
-            steps {
-                script {
-                    // 使用 shell 命令查看 Git 版本
-                    sh 'git --version'
-                }
-            }
-        }
+        // stage('Check Git Version') {
+        //     steps {
+        //         script {
+        //             // 使用 shell 命令查看 Git 版本
+        //             sh 'git --version'
+        //         }
+        //     }
+        // }
 
-        stage('Check npm Version') {
-            steps {
-                // Print npm version
-                sh 'npm --version'
-            }
-        }
+        // stage('Check npm Version') {
+        //     steps {
+        //         // Print npm version
+        //         sh 'npm --version'
+        //     }
+        // }
         
         // stage('Install Dependencies') {
         //     steps {
