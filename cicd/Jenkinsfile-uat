@@ -38,9 +38,9 @@ pipeline {
                                 . "$NVM_DIR/nvm.sh"
                         else
                             echo "nvm is not installed. Installing nvm..."
-                            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+                            #curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
                             # Source nvm script after installation
-                            . "$NVM_DIR/nvm.sh"
+                            #. "$NVM_DIR/nvm.sh"
                         fi
                         
                         node -v  # Check the current Node.js version
@@ -126,7 +126,6 @@ pipeline {
         stage('Check node n npm Version') {
             steps {
                 // Print version
-                sh 'nvm list'
                 sh 'npm --version'
                 sh 'node --version'
 
