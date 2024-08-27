@@ -14,6 +14,24 @@ pipeline {
         //     }
         // }
 
+        stage('Print Current Directory') {
+            steps {
+                script {
+                    sh 'pwd'  // 对于 Linux/MacOS
+                    sh 'ls -la'
+                }
+            }
+        }
+
+        stage('Print Workspace Directory') {
+            steps {
+                dir('easy-tax') {
+                    sh 'pwd'  // 对于 Linux/MacOS
+                    sh 'ls -la'
+                }
+            }
+        }
+        
         stage('Clean Workspace') {
             steps {
                 deleteDir() // Deletes the workspace contents
