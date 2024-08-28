@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    environment {
+        SERVICE_URL = 'https://jiangren.com.au:3000'  // 替换为EC2实例的公共IP
+    }
+
+    stages {
+        stage('Access Service') {
+            steps {
+                script {
+                    // 访问服务并测试响应
+                    sh '''
+                        echo "Accessing service at ${SERVICE_URL}..."
+                        curl -I ${SERVICE_URL}  // 发送HEAD请求以检查服务响应
+                    '''
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            // 清理步骤，如果需要 
+            // cleanWs()
+        }
+    }
+}
