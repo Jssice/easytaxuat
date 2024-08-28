@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         NODE_VERSION = '16'
+        SERVICE_URL = 'https://jiangren.com.au:3000'  // 替换为EC2实例的公共IP
     }
 
     stages {
@@ -108,14 +109,14 @@ pipeline {
         //     }
         // }
 
-        // stage('Print Current Directory') {
-        //     steps {
-        //         script {
-        //             sh 'pwd'  // 对于 Linux/MacOS
-        //             sh 'ls -la'
-        //         }
-        //     }
-        // }
+        stage('Print Current Directory') {
+            steps {
+                script {
+                    sh 'pwd'  // 对于 Linux/MacOS
+                    sh 'ls -la'
+                }
+            }
+        }
 
 
         // stage('Check Git Version') {
@@ -143,6 +144,15 @@ pipeline {
             }
         }
 
+        stage('Print Current Directory') {
+            steps {
+                script {
+                    sh 'pwd'  // 对于 Linux/MacOS
+                    sh 'ls -la'
+                }
+            }
+        }
+        
         stage('Start Development Server') {
             steps {
                 sh 'npm run dev &'
@@ -161,6 +171,17 @@ pipeline {
             }
         }
 
+        stage('Access Service') {
+            steps {
+                script {
+                    // 访问服务并测试响应
+                    sh '''
+                        echo "Accessing service at ${SERVICE_URL}..."
+                        curl -I ${SERVICE_URL}  // 发送HEAD请求以检查服务响应
+                    '''
+                }
+            }
+        }
         // stage('Run Tests') {
         //     steps {
         //         sh 'npm test'
