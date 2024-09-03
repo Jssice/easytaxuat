@@ -1,0 +1,211 @@
+pipeline {
+    agent any
+
+    environment {
+        NODE_VERSION = '16'
+        SERVICE_URL = 'localhost:3000'  // 替换为EC2实例的公共IPhttps://jiangren.com.au
+    }
+
+    stages {
+        // stage("build") {
+        //     // when {
+        //     //     expression {
+        //     //         BRANCH_NAME == 'dev' && CODE_CHANGE == true
+        //     //     }
+        //     // }
+            
+        //     steps {
+        //         echo 'building the app ...'
+        //     }
+        // }
+
+        // stage("test") {
+        //     when {
+        //         expression {
+        //             BRANCH_NAME == 'dev'
+        //         }
+        //     }
+        //     steps {
+        //         echo 'testing the app ...'
+        //     }
+        // }
+
+        stage('Check Node Version') {
+            steps {
+                script {
+                    sh '''
+                        export NVM_DIR="$HOME/.nvm"
+                        if [ -s "$NVM_DIR/nvm.sh" ]; then
+                                . "$NVM_DIR/nvm.sh"
+                        else
+                            echo "nvm is not installed!"
+                            #echo "nvm is not installed. Installing nvm..."
+                            #curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+                            # Source nvm script after installation
+                            #. "$NVM_DIR/nvm.sh"
+                        fi
+                        
+                        node -v  # Check the current Node.js version
+                        npm -v   # Check the npm version
+
+                        nvm install ${NODE_VERSION}
+                        nvm use ${NODE_VERSION}
+                        
+                        node -v  # Check the current Node.js version
+                        npm -v   # Check the npm version
+                    '''
+                }
+            }
+        }
+
+        // stage('Check Git Path') {
+        //     steps {
+        //         script {
+        //             // 显示 Git 的安装路径
+        //             sh 'which git'
+
+        //             // 显示 Git 版本
+        //             sh 'git --version'
+        //         }
+        //     }
+        // }
+
+        // stage('Print Current Directory0') {
+        //     steps {
+        //         script {
+        //             sh 'pwd'  // 对于 Linux/MacOS
+        //             sh 'ls -la'
+        //         }
+        //     }
+        // }
+
+        // stage('Print Workspace Directory0') {
+        //     steps {
+        //         dir('easy-tax') {
+        //             sh 'pwd'  // 对于 Linux/MacOS
+        //             sh 'ls -la'
+        //         }
+        //     }
+        // }
+        
+        // stage('Clean Workspace') {
+        //     steps {
+        //         deleteDir() // Deletes the workspace contents
+        //     }
+        // }
+        
+        stage('Checkout Code') {
+            steps {
+                git url: 'https://github.com/Jssice/easy-tax.git'
+            }
+        }
+
+        // stage('Print Workspace Directory') {
+        //     steps {
+        //         dir('easy-tax') {
+        //             sh 'pwd'  // 对于 Linux/MacOS
+        //             sh 'ls -la'
+        //         }
+        //     }
+        // }
+
+        stage('Print Current Directory') {
+            steps {
+                script {
+                    sh 'pwd'  // 对于 Linux/MacOS
+                    sh 'ls -la'
+                }
+            }
+        }
+
+
+        // stage('Check Git Version') {
+        //     steps {
+        //         script {
+        //             // 使用 shell 命令查看 Git 版本
+        //             sh 'git --version'
+        //         }
+        //     }
+        // }
+
+        // stage('Check node n npm Version') {
+        //     steps {
+        //         // Print version
+        //         sh 'npm --version'
+        //         sh 'node --version'
+
+        //     }
+        // }
+
+        stage('Install Dependencies') {
+            steps {
+                echo "Installing dependencies ..."
+                // sh 'yarn install' 
+                sh 'npm install'
+            }
+        }
+
+        stage('Print Current Directory after') {
+            steps {
+                script {
+                    sh 'pwd'  // 对于 Linux/MacOS
+                    sh 'ls -la'
+                }
+            }
+        }
+        
+        stage('Start Development Server') {
+            steps {
+                echo "Starting ..."
+                sh 'npm run dev &'
+                sleep time: 30, unit: 'SECONDS' // 等待服务器启动
+            }
+        }
+        
+        // stage('Deploy') {
+        //     steps {
+        //         script {
+        //             // Add your deployment steps here
+        //             // For example, you might copy files to a server, or use a deployment tool
+        //             sh 'echo Deploying to UAT environment...'
+        //             // Example: sh 'scp -r * user@uat-server:/path/to/deploy'
+        //         }
+        //     }
+        // }
+
+        stage('Access Service') {
+            steps {
+                script {
+                    // 访问服务并测试响应
+                    sh '''
+                        echo "Accessing service at ${SERVICE_URL}..."
+                        curl -I ${SERVICE_URL}  // 发送HEAD请求以检查服务响应
+                    '''
+                }
+            }
+        }
+        // stage('Run Tests') {
+        //     steps {
+        //         sh 'npm test'
+        //     }
+        // }
+        
+        // stage('Stop Server') {
+        //     steps {
+        //         sh 'pkill -f "next dev"'
+        //     }
+        // }
+    }
+
+    post {
+        success {
+            echo 'Deployment completed successfully.'
+        }
+        failure {
+            echo 'Deployment failed.'
+        }
+        // always {
+        //     cleanWs()
+        // }
+    }
+}
