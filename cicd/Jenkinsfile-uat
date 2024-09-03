@@ -7,7 +7,7 @@ pipeline {
     environment {
 		// REGION = 'ap-southeast-2'
 		// JR_ENV = 'uat'
-		WORKSPACE_PATH = '/var/jenkins_home/workspace/easytax_uat/easy-tax'
+		// WORKSPACE_PATH = '/var/jenkins_home/workspace/easytax_uat/easy-tax'
 		// BITBUCKET_REPO = 'git@bitbucket.org:jiang_ren/jobpin.git' 
         APP_NAME = 'EasyTax'
         PORT = '3000'
@@ -23,6 +23,7 @@ pipeline {
                 echo 'Cloning repository...'
                 sh 'git clone https://github.com/Jssice/easytaxuat.git'
                 dir('easy-tax') {
+                    sh 'ls -la'
                     sh 'git checkout master'
                 }
             }
