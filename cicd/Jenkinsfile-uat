@@ -33,7 +33,6 @@ pipeline {
             steps {
                 dir('easy-tax') {
                     echo 'Installing dependencies...'
-                    sh 'npm install'
                 }
             }
         }
