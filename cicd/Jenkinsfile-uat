@@ -22,6 +22,7 @@ pipeline {
             steps {
                 echo 'Cloning repository...'
                 sh 'git clone https://github.com/Jssice/easytaxuat.git'
+                sh 'ls -la'
                 dir('easy-tax') {
                     sh 'ls -la'
                     sh 'git checkout master'
